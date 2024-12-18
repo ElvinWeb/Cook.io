@@ -1,7 +1,11 @@
 import { addEventOnElements, fetchData, getTime } from "../utils.js";
 import { skeletonCard } from "../common.js";
 import { initTheme } from "../theme.js";
-import { CARD_QUERIES } from "../config.js";
+import {
+  CARD_QUERIES,
+  CONTAINER_MAX_CARD,
+  CONTAINER_MAX_WIDTH,
+} from "../config.js";
 
 // Recipe Page Module
 const recipesPage = (function () {
@@ -195,6 +199,72 @@ const recipesPage = (function () {
     },
   };
 
+  // Scroll Handlers module
+  const ScrollHandler = {
+    init() {
+      this.initFilterButtonVisibility();
+      this.initInfiniteScroll();
+    },
+
+    initFilterButtonVisibility() {
+      window.addEventListener("scroll", () => {
+        elements.filterBtn.classList[window.scrollY >= 120 ? "add" : "remove"](
+          "active"
+        );
+      });
+    },
+
+    async initInfiniteScroll() {
+      window.addEventListener("scroll", async () => {
+        if (this.isLoadMore()) {
+          await this.loadMoreRecipes();
+        }
+
+        if (!state.nextPageUrl) {
+          elements.loadMore.innerHTML = `<p class="body-medium info-text">No more recipes</p>`;
+        }
+      });
+    },
+
+    isLoadMore() {
+      return (
+        elements.loadMore.getBoundingClientRect().top < window.innerHeight &&
+        !state.requestedBefore &&
+        state.nextPageUrl
+      );
+    },
+
+    async loadMoreRecipes() {
+      this.showLoadingState();
+      state.requestedBefore = true;
+
+      const data = await this.fetchNextPage();
+      state.nextPageUrl = data._links.next?.href;
+
+      RecipeRendererHandler.render(data);
+      this.hideLoadingState();
+      state.requestedBefore = false;
+    },
+
+    showLoadingState() {
+      elements.loadMore.innerHTML = skeletonCard.repeat(
+        Math.round(
+          (elements.loadMore.clientWidth / CONTAINER_MAX_WIDTH) *
+            CONTAINER_MAX_CARD
+        )
+      );
+    },
+
+    hideLoadingState() {
+      elements.loadMore.innerHTML = "";
+    },
+
+    async fetchNextPage() {
+      const response = await fetch(state.nextPageUrl);
+      return await response.json();
+    },
+  };
+
   // Batches the recipes page functionalities
   const init = function () {
     // Initialize accordion components
@@ -213,6 +283,9 @@ const recipesPage = (function () {
 
     // Handle URL queries
     const queries = QueryHandler.init();
+
+    // Setup scroll events
+    ScrollHandler.init();
 
     // Initial recipe load
     elements.gridList.innerHTML = skeletonCard.repeat(20);
