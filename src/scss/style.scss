@@ -194,6 +194,18 @@ body {
     animation: fade 300ms var(--transition-timing-function) forwards;
 }
 
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-hover);
+}
+
 @keyframes fade {
     0% {
         opacity: 0;

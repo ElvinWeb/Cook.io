@@ -14,7 +14,16 @@ const recipesPage = (function () {
   // DOM Elements
   const elements = {
     accordions: document.querySelectorAll("[data-accordion]"),
+    filterBar: document.querySelector("[data-filter-bar]"),
+    filterTogglers: document.querySelectorAll("[data-filter-toggler]"),
     overlay: document.querySelector("[data-overlay]"),
+    filterSubmit: document.querySelector("[data-filter-submit]"),
+    filterClear: document.querySelector("[data-filter-clear]"),
+    filterSearch: document.querySelector(
+      "[data-filter-bar] input[type='search']"
+    ),
+    filterCount: document.querySelector("[data-filter-count]"),
+    filterBtn: document.querySelector("[data-filter-btn]"),
     gridList: document.querySelector("[data-grid-list]"),
     loadMore: document.querySelector("[data-load-more]"),
   };
@@ -39,6 +48,44 @@ const recipesPage = (function () {
         isExpanded = !isExpanded;
         button.setAttribute("aria-expanded", isExpanded);
       });
+    },
+  };
+
+  // Filter Handlers module
+  const FilterHandler = {
+    toggle() {
+      elements.filterBar.classList.toggle("active");
+      elements.overlay.classList.toggle("active");
+      document.body.style.overflow =
+        document.body.style.overflow === "hidden" ? "visible" : "hidden";
+    },
+
+    submit() {
+      const queries = [];
+      const filterCheckboxes =
+        elements.filterBar.querySelectorAll("input:checked");
+
+      if (elements.filterSearch.value) {
+        queries.push(["q", elements.filterSearch.value]);
+      }
+
+      if (filterCheckboxes.length) {
+        filterCheckboxes.forEach((checkbox) => {
+          const key = checkbox.parentElement.parentElement.dataset.filter;
+          queries.push([key, checkbox.value]);
+        });
+      }
+
+      window.location = queries.length
+        ? `?${queries.join("&").replace(/,/g, "=")}`
+        : "/src/pages/recipes.html";
+    },
+
+    clear() {
+      const filterCheckboxes =
+        elements.filterBar.querySelectorAll("input:checked");
+      filterCheckboxes?.forEach((elem) => (elem.checked = false));
+      elements.filterSearch.value = "";
     },
   };
 
@@ -113,19 +160,65 @@ const recipesPage = (function () {
     },
   };
 
+  // URL Query Handler module
+  const QueryHandler = {
+    init() {
+      const queryStr = window.location.search.slice(1);
+      const queries = queryStr && queryStr.split("&").map((i) => i.split("="));
+
+      this.updateFilterCount(queries);
+      this.populateFilters(queryStr);
+
+      return queries;
+    },
+
+    updateFilterCount(queries) {
+      elements.filterCount.style.display = queries.length ? "block" : "none";
+      if (queries.length) elements.filterCount.innerHTML = queries.length;
+    },
+
+    populateFilters(queryStr) {
+      if (!queryStr) return;
+
+      queryStr.split("&").forEach((query) => {
+        const [key, value] = query.split("=");
+        const decodedValue = value.replace(/%20/g, " ");
+
+        if (key === "q") {
+          elements.filterSearch.value = decodedValue;
+        } else {
+          elements.filterBar.querySelector(
+            `[value="${decodedValue}"]`
+          ).checked = true;
+        }
+      });
+    },
+  };
+
   // Batches the recipes page functionalities
   const init = function () {
     // Initialize accordion components
     elements.accordions.forEach(Accordion.init);
 
+    // Setup filter events
+    addEventOnElements(elements.filterTogglers, "click", FilterHandler.toggle);
+    elements.filterSubmit.addEventListener("click", FilterHandler.submit);
+    elements.filterSearch.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") FilterHandler.submit();
+    });
+    elements.filterClear.addEventListener("click", FilterHandler.clear);
+
     // Initialize theme
     initTheme();
+
+    // Handle URL queries
+    const queries = QueryHandler.init();
 
     // Initial recipe load
     elements.gridList.innerHTML = skeletonCard.repeat(20);
 
     // Fetch all recipes
-    fetchData(DEFAULT_QUERIES, RecipeRendererHandler.renderAll);
+    fetchData(queries || DEFAULT_QUERIES, RecipeRendererHandler.renderAll);
   };
 
   return { init };
