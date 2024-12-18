@@ -1,5 +1,7 @@
 export const BASE_API_URL = "https://api.edamam.com/api/recipes/v2";
 export const API_KEY = "61f372d785e8df1a4a15b1ec67c86371";
+export const CONTAINER_MAX_WIDTH = 1200;
+export const CONTAINER_MAX_CARD = 6;
 export const THEME_KEY = "theme";
 export const APP_ID = "84aca9b1";
 export const TYPE = "public";
