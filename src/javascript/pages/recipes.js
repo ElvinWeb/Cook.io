@@ -1,23 +1,17 @@
-import { fetchData, getTime, addEventOnElements } from "../utils.js";
-import {
-  CARD_QUERIES,
-  CONTAINER_MAX_CARD,
-  CONTAINER_MAX_WIDTH,
-} from "../config.js";
-import { initTheme } from "../theme.js";
+import { addEventOnElements, fetchData, getTime } from "../utils.js";
 import { skeletonCard } from "../common.js";
-initTheme();
+import { initTheme } from "../theme.js";
 
-// Initialize application
-// const recipesPage = (function () {
-//   function init() {
-//     initTheme();
-//   }
+// Recipe Page Module
+const recipesPage = (function () {
+  // Batches the recipes page functionalities
+  const init = function () {
+    // Initialize theme
+    initTheme();
+  };
 
-//   return {
-//     init,
-//   };
-// })();
+  return { init };
+})();
 
-// recipesPage.init();
-
+// Initialize the recipe page
+recipesPage.init();

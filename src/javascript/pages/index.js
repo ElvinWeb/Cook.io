@@ -1,9 +1,9 @@
 import { addEventOnElements, fetchData, getTime } from "../utils.js";
-import { skeletonCard } from "../common.js";
 import { CARD_QUERIES, CUISINE_TYPES } from "../config.js";
+import { skeletonCard } from "../common.js";
 import { initTheme } from "../theme.js";
 
-// Initialize application
+// Index Page Module
 const indexPage = (function () {
   // DOM element references
   const searchField = document.querySelector("[data-search-field]");
@@ -23,7 +23,7 @@ const indexPage = (function () {
       activeBtn = btn;
     },
   };
-
+  
   // Search functionality module
   const SearchHandler = {
     handleSearch(searchValue) {
@@ -34,7 +34,7 @@ const indexPage = (function () {
       }
     },
 
-    initSearchListeners() {
+    init() {
       searchBtn.addEventListener("click", () =>
         handleSearch(searchField.value)
       );
@@ -93,7 +93,7 @@ const indexPage = (function () {
       }
     },
 
-    initTabListeners() {
+    init() {
       addEventOnElements(tabBtns, "click", function () {
         const newPanel = document.querySelector(
           `#${this.getAttribute("aria-controls")}`
@@ -236,9 +236,10 @@ const indexPage = (function () {
     },
   };
 
+  // Batches the index page functionalities
   function init() {
-    SearchHandler.initSearchListeners();
-    TabHandler.initTabListeners();
+    SearchHandler.init();
+    TabHandler.init();
     ContentLoader.loadSliderContent();
     ContentLoader.loadTabContent(
       TabState.getActiveBtn(),
@@ -252,5 +253,5 @@ const indexPage = (function () {
   };
 })();
 
-// Start the application
+// Initialize the index page
 indexPage.init();
