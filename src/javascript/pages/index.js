@@ -36,12 +36,12 @@ const indexPage = (function () {
 
     init() {
       searchBtn.addEventListener("click", () =>
-        handleSearch(searchField.value)
+        SearchHandler.handleSearch(searchField.value)
       );
       searchField.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
           e.preventDefault();
-          handleSearch(searchField.value);
+          SearchHandler.handleSearch(searchField.value);
         }
       });
     },
@@ -103,7 +103,7 @@ const indexPage = (function () {
       });
 
       addEventOnElements(tabBtns, "keydown", function (e) {
-        handleTabKeyboard(e, this);
+        TabHandler.handleTabKeyboard(e, this);
       });
     },
   };
