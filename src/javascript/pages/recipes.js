@@ -140,7 +140,7 @@ const recipesPage = (function () {
 
         <div class="card-body">
           <h3 class="title-small">
-            <a href="./detail.html?recipe=${recipeId}" class="card-link">${
+            <a href="/src/pages/detail.html?recipe=${recipeId}" class="card-link">${
         title ?? "Untitled"
       }</a>
           </h3>

@@ -23,7 +23,7 @@ const indexPage = (function () {
       activeBtn = btn;
     },
   };
-  
+
   // Search functionality module
   const SearchHandler = {
     handleSearch(searchValue) {
@@ -222,7 +222,7 @@ const indexPage = (function () {
 
             sliderWrapper.innerHTML += `
               <li class="slider-item" data-slider-item>
-                <a href="./recipes.html?cuisineType=${CUISINE_TYPES[
+                <a href="/src/pages/recipes.html?cuisineType=${CUISINE_TYPES[
                   index
                 ].toLowerCase()}" class="load-more-card has-state">
                   <span class="label-large">Show more</span>

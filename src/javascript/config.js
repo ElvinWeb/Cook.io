@@ -13,10 +13,10 @@ export const CARD_QUERIES = [
   ["field", "uri"],
   ["field", "label"],
   ["field", "image"],
-  ["field", "totalTime"]
+  ["field", "totalTime"],
 ];
 export const CUISINE_TYPES = ["Asian", "Italian"];
 export const API_ENDPOINTS = {
   recipes: (query) => `${BASE_API_URL}?app_id=${APP_ID}&app_key=${API_KEY}&type=${TYPE}${query ? `&${query}` : ""}`,
+  detail: (detailId) => `${BASE_API_URL}/${detailId}?app_id=${APP_ID}&app_key=${API_KEY}&type=${TYPE}`,
 };
-
