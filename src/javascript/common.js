@@ -1,3 +1,6 @@
+import { CARD_QUERIES } from "./config.js";
+import { fetchSavedData } from "./utils.js";
+
 const navbarLinks = document.querySelectorAll(".navbar-link");
 const activePage = window.location.pathname;
 
@@ -35,3 +38,24 @@ export const skeletonCard = `
 
   </div>
 `;
+
+window.saveRecipe = function (element, recipeId) {
+  const isSaved = window.localStorage.getItem(`cookio-recipe${recipeId}`);
+
+  if (!isSaved) {
+    fetchSavedData(CARD_QUERIES, recipeId, function (data) {
+      window.localStorage.setItem(
+        `cookio-recipe${recipeId}`,
+        JSON.stringify(data)
+      );
+      element.classList.toggle("saved");
+      element.classList.toggle("removed");
+      showNotification("Added to Recipe book");
+    });
+  } else {
+    window.localStorage.removeItem(`cookio-recipe${recipeId}`);
+    element.classList.toggle("saved");
+    element.classList.toggle("removed");
+    showNotification("Removed from Recipe book");
+  }
+};

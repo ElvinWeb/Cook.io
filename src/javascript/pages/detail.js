@@ -1,6 +1,7 @@
 import { getTime, fetchDetailsData } from "../utils.js";
 import { initTheme } from "../theme.js";
-// Initialize application
+
+// Detail Page Module
 const detailPage = (function () {
   // DOM elements
   const detailContainer = document.querySelector("[data-detail-container]");
@@ -139,7 +140,7 @@ const detailPage = (function () {
     });
   };
 
-  // Initialize
+  // Batches the recipe detail page functionalities
   function init() {
     initTheme();
     loadRecipeDetails();

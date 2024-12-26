@@ -19,4 +19,5 @@ export const CUISINE_TYPES = ["Asian", "Italian"];
 export const API_ENDPOINTS = {
   recipes: (query) => `${BASE_API_URL}?app_id=${APP_ID}&app_key=${API_KEY}&type=${TYPE}${query ? `&${query}` : ""}`,
   detail: (detailId) => `${BASE_API_URL}/${detailId}?app_id=${APP_ID}&app_key=${API_KEY}&type=${TYPE}`,
+  saved: (recipeId, query) => `${BASE_API_URL}/${recipeId}?app_id=${APP_ID}&app_key=${API_KEY}&type=${TYPE}${query ? `&${query}` : ""}`,
 };

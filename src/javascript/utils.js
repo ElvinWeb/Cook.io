@@ -1,5 +1,6 @@
 import { API_ENDPOINTS } from "./config.js";
 import { showNotification } from "./common.js";
+
 export const getTime = (minute) => {
   const hour = Math.floor(minute / 60);
   const day = Math.floor(hour / 24);
@@ -44,6 +45,26 @@ export const fetchDetailsData = async function (detailId, successCallback) {
 
     if (!response.ok) {
       throw new Error("Failed to fetch recipe details data");
+    }
+
+    const data = await response.json();
+    successCallback(data);
+  } catch (error) {
+    showNotification(error.message);
+    throw error;
+  }
+};
+
+export const fetchSavedData = async function (
+  query,
+  recipeId,
+  successCallback
+) {
+  try {
+    const response = await fetch(API_ENDPOINTS.saved(recipeId, query));
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch saved recipe data");
     }
 
     const data = await response.json();

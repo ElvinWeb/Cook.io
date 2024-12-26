@@ -6,7 +6,7 @@ import { THEME_KEY, THEME } from "./config.js";
 const htmlElement = document.documentElement;
 const themeBtn = document.querySelector("[data-theme-btn]");
 
-/* Initialize theme based on user preference or system setting */
+// Initialize theme based on user preference or system setting
 const loadThemePreference = function () {
   const savedTheme = sessionStorage.getItem(THEME_KEY);
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -14,7 +14,7 @@ const loadThemePreference = function () {
     savedTheme || (prefersDark ? THEME.DARK : THEME.LIGHT);
 };
 
-/* Toggle theme and update storage */
+// Toggle theme and update storage
 const toggleTheme = function () {
   const isLight = htmlElement.dataset.theme === THEME.LIGHT;
   const newTheme = isLight ? THEME.DARK : THEME.LIGHT;
