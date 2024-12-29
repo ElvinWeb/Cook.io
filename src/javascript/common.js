@@ -1,28 +1,13 @@
 import { CARD_QUERIES } from "./config.js";
-import { fetchSavedData } from "./utils.js";
+import { fetchRecipesData } from "./utils.js";
 
 const navbarLinks = document.querySelectorAll(".navbar-link");
 const activePage = window.location.pathname;
-
 navbarLinks.forEach((link) => {
   if (link.href.includes(activePage)) {
     link.classList.toggle("active");
   }
 });
-
-const snackbarContainer = document.createElement("div");
-snackbarContainer.classList.add("snackbar-container");
-document.body.appendChild(snackbarContainer);
-
-export function showNotification(message) {
-  const snackbar = document.createElement("div");
-  snackbar.classList.add("snackbar");
-  snackbar.innerHTML = `<p class="body-medium">${message}</p>`;
-  snackbarContainer.appendChild(snackbar);
-  snackbar.addEventListener("animationend", (e) =>
-    snackbarContainer.removeChild(snackbar)
-  );
-}
 
 /* Skeleton card */
 export const skeletonCard = `
@@ -43,7 +28,7 @@ window.saveRecipe = function (element, recipeId) {
   const isSaved = window.localStorage.getItem(`cookio-recipe${recipeId}`);
 
   if (!isSaved) {
-    fetchSavedData(CARD_QUERIES, recipeId, function (data) {
+    fetchRecipesData(CARD_QUERIES, recipeId, "saved", function (data) {
       window.localStorage.setItem(
         `cookio-recipe${recipeId}`,
         JSON.stringify(data)

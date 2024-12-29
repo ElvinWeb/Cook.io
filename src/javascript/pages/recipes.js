@@ -1,4 +1,4 @@
-import { addEventOnElements, fetchData, getTime } from "../utils.js";
+import { addEventOnElements, getTime, fetchRecipesData } from "../utils.js";
 import { skeletonCard } from "../common.js";
 import { initTheme } from "../theme.js";
 import {
@@ -291,7 +291,12 @@ const recipesPage = (function () {
     elements.gridList.innerHTML = skeletonCard.repeat(20);
 
     // Fetch all recipes
-    fetchData(queries || DEFAULT_QUERIES, RecipeRendererHandler.renderAll);
+    fetchRecipesData(
+      queries || DEFAULT_QUERIES,
+      undefined,
+      "recipes",
+      RecipeRendererHandler.renderAll
+    );
   };
 
   return { init };

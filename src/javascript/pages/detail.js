@@ -1,4 +1,4 @@
-import { getTime, fetchDetailsData } from "../utils.js";
+import { getTime, fetchRecipesData } from "../utils.js";
 import { initTheme } from "../theme.js";
 
 // Detail Page Module
@@ -71,9 +71,9 @@ const detailPage = (function () {
 
     const tagElements = generateTagElements(tags, { cuisineType, dietLabels });
     const ingredientItems = generateIngredientElements(ingredientLines);
-
-    // Render template
-    detailContainer.innerHTML = `
+    const btn =
+      // Render template
+      (detailContainer.innerHTML = `
       <figure class="detail-banner img-holder">
         <img src="${bannerUrl}" width="${width}" height="${height}" alt="${title}"
           class="img-cover">
@@ -129,12 +129,12 @@ const detailPage = (function () {
             : ""
         }
       </div>
-    `;
+    `);
   };
 
   // Data fetching
   const loadRecipeDetails = () => {
-    fetchDetailsData(detailId, (data) => {
+    fetchRecipesData(undefined, detailId, "details", (data) => {
       state.recipe = data.recipe;
       renderRecipeDetails(state.recipe);
     });

@@ -1,4 +1,4 @@
-import { addEventOnElements, fetchData, getTime } from "../utils.js";
+import { addEventOnElements, getTime, fetchRecipesData } from "../utils.js";
 import { CARD_QUERIES, CUISINE_TYPES } from "../config.js";
 import { skeletonCard } from "../common.js";
 import { initTheme } from "../theme.js";
@@ -166,11 +166,13 @@ const indexPage = (function () {
         </div>
       `;
 
-      fetchData(
+      fetchRecipesData(
         [
           ["mealType", currentTabBtn.textContent.trim().toLowerCase()],
           ...CARD_QUERIES,
         ],
+        undefined,
+        "recipes",
         function (data) {
           currentTabPanel.innerHTML = "";
           const gridList = document.createElement("div");
@@ -208,8 +210,10 @@ const indexPage = (function () {
 
         const sliderWrapper = section.querySelector("[data-slider-wrapper]");
 
-        fetchData(
+        fetchRecipesData(
           [...CARD_QUERIES, ["cuisineType", CUISINE_TYPES[index]]],
+          undefined,
+          "recipes",
           function (data) {
             sliderWrapper.innerHTML = "";
 
